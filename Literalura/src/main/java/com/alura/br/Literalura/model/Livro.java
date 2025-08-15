@@ -3,47 +3,42 @@ package com.alura.br.Literalura.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "livros") // nome da tabela no banco
 public class Livro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto incremento
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;  // necessário para JPA
 
     private String titulo;
     private String autor;
-    private int ano;
+    private int anoNascimento;
+    private int anoFalecimento;
 
-    // Getters e Setters
-    public Long getId() {
-        return id;
-    }
+    // Getters e setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getTitulo() {
-        return titulo;
-    }
+    public String getAutor() { return autor; }
+    public void setAutor(String autor) { this.autor = autor; }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
+    public int getAnoNascimento() { return anoNascimento; }
+    public void setAnoNascimento(int anoNascimento) { this.anoNascimento = anoNascimento; }
 
-    public String getAutor() {
-        return autor;
-    }
+    public int getAnoFalecimento() { return anoFalecimento; }
+    public void setAnoFalecimento(int anoFalecimento) { this.anoFalecimento = anoFalecimento; }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-
-    public int getAno() {
-        return ano;
-    }
-
-    public void setAno(int ano) {
-        this.ano = ano;
+    // toString() vai aqui, no final da classe
+    @Override
+    public String toString() {
+        return "Livro {" +
+                "ID=" + id +
+                ", Título='" + titulo + '\'' +
+                ", Autor='" + autor + '\'' +
+                ", Ano de Nascimento=" + anoNascimento +
+                ", Ano de Falecimento=" + anoFalecimento +
+                '}';
     }
 }
