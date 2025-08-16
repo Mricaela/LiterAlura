@@ -1,6 +1,7 @@
 package com.alura.br.Literalura;
 
 import com.alura.br.Literalura.model.Livro;
+import com.alura.br.Literalura.model.Autor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class GutendexMain {
     public static void main(String[] args) throws Exception {
-        String searchQuery = "Jane Austen"; //
+        String searchQuery = "Jane Austen";
         String url = "https://gutendex.com/books/?search=" + searchQuery.replace(" ", "+");
 
         HttpClient client = HttpClient.newHttpClient();
@@ -36,26 +37,39 @@ public class GutendexMain {
             JsonNode authors = book.get("authors");
             if (authors != null && authors.size() > 0) {
                 JsonNode firstAuthor = authors.get(0);
-                livro.setAutor(firstAuthor.get("name").asText());
 
-                // Ano de nascimento
+                Autor autor = new Autor();
+                autor.setNome(firstAuthor.get("name").asText());
+
                 if (firstAuthor.has("birth_year") && !firstAuthor.get("birth_year").isNull()) {
-                    livro.setAnoNascimento(firstAuthor.get("birth_year").asInt());
-                } else {
-                    livro.setAnoNascimento(0);
+                    autor.setAnoNascimento(firstAuthor.get("birth_year").asInt());
                 }
 
-                // Ano de falecimento
                 if (firstAuthor.has("death_year") && !firstAuthor.get("death_year").isNull()) {
-                    livro.setAnoFalecimento(firstAuthor.get("death_year").asInt());
-                } else {
-                    livro.setAnoFalecimento(0);
+                    autor.setAnoFalecimento(firstAuthor.get("death_year").asInt());
                 }
+
+                livro.setAutor(autor);
 
             } else {
-                livro.setAutor("Desconhecido");
-                livro.setAnoNascimento(0);
-                livro.setAnoFalecimento(0);
+                Autor autorDesconhecido = new Autor();
+                autorDesconhecido.setNome("Desconhecido");
+                livro.setAutor(autorDesconhecido);
+            }
+
+            // Pega o primeiro idioma da lista
+            JsonNode languages = book.get("languages");
+            if (languages != null && languages.size() > 0) {
+                livro.setIdioma(languages.get(0).asText());
+            } else {
+                livro.setIdioma("Desconhecido");
+            }
+
+            // Número de downloads
+            if (book.has("download_count") && !book.get("download_count").isNull()) {
+                livro.setDownloads(book.get("download_count").asInt());
+            } else {
+                livro.setDownloads(0);
             }
 
             livros.add(livro);
@@ -64,9 +78,11 @@ public class GutendexMain {
         // Printando os resultados
         for (Livro livro : livros) {
             System.out.println("Título: " + livro.getTitulo());
-            System.out.println("Autor: " + livro.getAutor());
-            System.out.println("Ano de Nascimento: " + livro.getAnoNascimento());
-            System.out.println("Ano de Falecimento: " + livro.getAnoFalecimento());
+            System.out.println("Autor: " + livro.getAutor().getNome());
+            System.out.println("Ano de Nascimento: " + livro.getAutor().getAnoNascimento());
+            System.out.println("Ano de Falecimento: " + livro.getAutor().getAnoFalecimento());
+            System.out.println("Idioma: " + livro.getIdioma());
+            System.out.println("Downloads: " + livro.getDownloads());
             System.out.println("------------");
         }
     }

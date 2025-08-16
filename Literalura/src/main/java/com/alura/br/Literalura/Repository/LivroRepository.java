@@ -2,9 +2,9 @@ package com.alura.br.Literalura.Repository;
 
 import com.alura.br.Literalura.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
 public interface LivroRepository extends JpaRepository<Livro, Long> {
+    List<Livro> findByIdioma(String idioma);
 }
-
