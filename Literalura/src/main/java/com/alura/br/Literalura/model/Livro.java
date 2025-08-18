@@ -11,7 +11,8 @@ public class Livro {
 
     private String titulo;
 
-    @Embedded
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "autor_id")
     private Autor autor;
 
     private String idioma;
