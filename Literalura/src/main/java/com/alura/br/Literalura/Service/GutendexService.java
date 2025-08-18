@@ -120,4 +120,25 @@ public class GutendexService {
     public List<Livro> listarLivrosPorIdioma(String idioma) {
         return livroRepository.findByIdioma(idioma);
     }
+
+    // Lista de todos os autores únicos
+    public List<String> listarTodosAutores() {
+        List<Livro> livros = livroRepository.findAll();
+        return livros.stream()
+                .map(l -> l.getAutor().getNome())
+                .distinct()
+                .toList();
+    }
+
+    // Lista autores que estavam vivos em determinado ano
+    public List<String> listarAutoresVivosEmAno(int ano) {
+        List<Livro> livros = livroRepository.findAll();
+        return livros.stream()
+                .map(Livro::getAutor)
+                .filter(a -> a.getAnoNascimento() <= ano && (a.getAnoFalecimento() == 0 || a.getAnoFalecimento() >= ano))
+                .map(Autor::getNome)
+                .distinct()
+                .toList();
+    }
+
 }
