@@ -141,4 +141,16 @@ public class GutendexService {
                 .toList();
     }
 
+    public long contarLivrosPorIdioma(String idioma) {
+        return livroRepository.countByIdioma(idioma);
+    }
+
+    public void mostrarEstatisticas() {
+        String[] idiomas = {"en", "pt"}; // Inglês e Português, por exemplo
+        for (String idioma : idiomas) {
+            long total = contarLivrosPorIdioma(idioma);
+            System.out.println("Total de livros em " + idioma + ": " + total);
+        }
+    }
+
 }

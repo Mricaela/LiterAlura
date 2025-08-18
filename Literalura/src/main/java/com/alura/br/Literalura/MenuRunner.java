@@ -30,6 +30,7 @@ public class MenuRunner implements CommandLineRunner {
             System.out.println("3 - Listar livros por idioma");
             System.out.println("4 - Listar todos os autores");
             System.out.println("5 - Listar autores vivos em determinado ano");
+            System.out.println("6 - Estatísticas de livros por idioma");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
             opcao = Integer.parseInt(scanner.nextLine());
@@ -69,6 +70,10 @@ public class MenuRunner implements CommandLineRunner {
                     List<String> autoresVivos = gutendexService.listarAutoresVivosEmAno(ano);
                     System.out.println("\n=== AUTORES VIVOS EM " + ano + " ===");
                     autoresVivos.forEach(System.out::println);
+                }
+                case 6 -> {
+                    System.out.println("\n=== ESTATÍSTICAS DE LIVROS POR IDIOMA ===");
+                    gutendexService.mostrarEstatisticas();
                 }
                 case 0 -> System.out.println("Saindo...");
                 default -> System.out.println("Opção inválida!");
