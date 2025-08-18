@@ -130,16 +130,17 @@ public class GutendexService {
                 .toList();
     }
 
-    // Lista autores que estavam vivos em determinado ano
     public List<String> listarAutoresVivosEmAno(int ano) {
         List<Livro> livros = livroRepository.findAll();
         return livros.stream()
                 .map(Livro::getAutor)
+                .filter(a -> a != null) // evita NullPointerException
                 .filter(a -> a.getAnoNascimento() <= ano && (a.getAnoFalecimento() == 0 || a.getAnoFalecimento() >= ano))
                 .map(Autor::getNome)
                 .distinct()
                 .toList();
     }
+
 
     public long contarLivrosPorIdioma(String idioma) {
         return livroRepository.countByIdioma(idioma);
@@ -152,5 +153,7 @@ public class GutendexService {
             System.out.println("Total de livros em " + idioma + ": " + total);
         }
     }
+
+
 
 }
